@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import DeckWidget from "./DeckWidget";
 import TextButton from "./TextButton";
-import { retrieveDecks } from "../utils/api";
+import { getDecks } from "../utils/api";
 import { receiveDecks } from "../actions";
 import { white } from "../utils/colors";
 
@@ -13,7 +13,7 @@ class Decks extends Component {
   };
 
   componentDidMount() {
-    retrieveDecks()
+    getDecks()
       .then(decks => this.props.receiveDecks(decks))
       .then(() => {
         this.setState({ ready: true });
@@ -77,7 +77,7 @@ const mapStateToProps = decks => ({
   decks
 });
 const mapDispatchToProps = dispatch => ({
-  receiveDecks: decks => dispatch(receiveDecks(decks))
+  getDecks: decks => dispatch(getDecks(decks))
 });
 export default connect(
   mapStateToProps,

@@ -1,16 +1,19 @@
 import React from 'react'
 import { View, Platform, StatusBar } from 'react-native'
 import AddDeck from './components/AddDeck'
+import Decks from './components/Decks'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
-import { TabNavigator, StackNavigator } from 'react-navigation'
-import { purple, white, blue } from './utils/colors'
+import { createAppContainer, createMaterialTopTabNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { purple, white, blue , green} from './utils/colors'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Constants } from 'expo'
 import { setLocalNotification } from './utils/helpers'
 
-function UdaciStatusBar ({backgroundColor, ...props}) {
+function AppStatusBar ({backgroundColor, ...props}) {
   return (
     <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -53,9 +56,11 @@ const Tabs = TabNavigator({
   }
 })
 
+const TabNav = createAppContainer(Platform.OS === 'ios' ? createBottomTabNavigator(Tabs, navigationOptions) : createMaterialTopTabNavigator(Tabs, navigationOptions))
+
 const MainNavigator = createStackNavigator(
   {
-    Home: Tabs,
+    Home: TabNav,
     DeckDetail: DeckDetail,
     AddCard: AddCard,
     Quiz: Quiz
@@ -67,7 +72,7 @@ const MainNavigator = createStackNavigator(
       headerStyle: { backgroundColor: blue },
       headerTitleStyle: { fontWeight: "bold" }
     }
-  }
+  },
 );
 
 export default class App extends React.Component {
@@ -78,7 +83,7 @@ export default class App extends React.Component {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
-          <UdaciStatusBar backgroundColor={green} barStyle="light-content" />
+          <AppStatusBar backgroundColor={green} barStyle="light-content" />
           <MainNavigator />
         </View>
       </Provider>
