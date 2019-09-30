@@ -14,7 +14,7 @@ import { white, blue} from "../utils/colors";
 
 class AddDeck extends Component {
   state = {
-    input: ""
+    input: " "
   };
 
   createDeckObject = () => ({
@@ -54,7 +54,7 @@ class AddDeck extends Component {
         <TextInput
           style={styles.input}
           value={input}
-          placeholder="e.g. Algebra"
+          placeholder="e.g. Presidents"
           onChangeText={this.handleInputChange}
         />
         <TextButton onPress={this.handleSubmit}>

@@ -1,7 +1,5 @@
 import React from 'react'
 import { View, Platform, StatusBar } from 'react-native'
-import AddDeck from './components/AddDeck'
-import Decks from './components/Decks'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers'
@@ -10,8 +8,13 @@ import { createStackNavigator } from 'react-navigation-stack'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { purple, white, blue , green} from './utils/colors'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Constants } from 'expo'
+import { Constants } from 'expo-constants'
 import { setLocalNotification } from './utils/helpers'
+import AddDeck from './components/AddDeck'
+import AddCard from './components/AddCard'
+import Decks from './components/Decks'
+import Quiz from './components/Quiz'
+import DeckDetail from './components/DeckDetail'
 
 function AppStatusBar ({backgroundColor, ...props}) {
   return (
@@ -21,7 +24,7 @@ function AppStatusBar ({backgroundColor, ...props}) {
   )
 }
 
-const Tabs = TabNavigator({
+const Tabs = {
   Decks: {
     screen: Decks,
     navigationOptions: {
@@ -36,10 +39,9 @@ const Tabs = TabNavigator({
       tabBarIcon: ({ tintColor }) => <FontAwesome name='plus-square' size={30} color={tintColor} />
     },
   },
-}, {
-  navigationOptions: {
-    header: null
-  },
+}
+
+const navigationOptions = {
   tabBarOptions: {
     activeTintColor: Platform.OS === 'ios' ? purple : white,
     style: {
@@ -54,11 +56,11 @@ const Tabs = TabNavigator({
       shadowOpacity: 1
     }
   }
-})
+}
 
 const TabNav = createAppContainer(Platform.OS === 'ios' ? createBottomTabNavigator(Tabs, navigationOptions) : createMaterialTopTabNavigator(Tabs, navigationOptions))
 
-const MainNavigator = createStackNavigator(
+const MainNavigator = createAppContainer(createStackNavigator(
   {
     Home: TabNav,
     DeckDetail: DeckDetail,
@@ -73,7 +75,7 @@ const MainNavigator = createStackNavigator(
       headerTitleStyle: { fontWeight: "bold" }
     }
   },
-);
+));
 
 export default class App extends React.Component {
   componentDidMount() {

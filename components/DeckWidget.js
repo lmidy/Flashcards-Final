@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import pluralize from "pluralize";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { white, blue } from "../utils/colors";
